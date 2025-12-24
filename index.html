@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Romantic Christmas Wish for Sawa ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  user-select: none;
+  background: linear-gradient(to bottom, #fff0f5, #ffe6f0);
+  color: #000;
+}
+
+/* Pages */
+.page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Snowflakes */
+.snowflake {
+  position: absolute;
+  top: -10px;
+  font-size: 10px;
+  color: white;
+  opacity: 0.8;
+  pointer-events: none;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) translateX(0); }
+  100% { transform: translateY(110vh) translateX(20px); }
+}
+
+/* Floating icons and hearts */
+.floating-icon, .heart-floating {
+  position: absolute;
+  opacity: 0.85;
+  pointer-events: none;
+  text-shadow: 0 0 8px #fff, 0 0 12px #ff99cc, 0 0 16px #ff3366;
+  transform-origin: center;
+}
+
+/* Burst icons */
+.burst-icon {
+  position: absolute;
+  font-size: 20px;
+  animation: burst 1s ease-out forwards;
+  pointer-events: none;
+  text-shadow: 0 0 6px #fff, 0 0 12px #ff66cc;
+}
+
+@keyframes burst {
+  from { transform: translate(0,0) scale(1); opacity: 1; }
+  to { transform: translate(var(--x), var(--y)) scale(1.8); opacity: 0; }
+}
+
+/* Twinkling stars */
+.star {
+  position: absolute;
+  font-size: 10px;
+  color: #ffffcc;
+  opacity: 0.8;
+  pointer-events: none;
+  animation: twinkle linear infinite;
+}
+
+@keyframes twinkle {
+  0%,100% { opacity: 0.1; }
+  50% { opacity: 1; }
+}
+
+h1 { font-size: 2.8rem; margin:0.5rem; color: #ff0044; text-shadow: 0 0 6px #fff,0 0 12px #ff66cc; }
+p { font-size: 1.6rem; margin: 0.4rem; cursor: pointer; color:#007700; }
+#name { color: #ff3399; font-weight: bold; text-shadow: 0 0 8px #ff66cc; }
+
+#extraMessage p,#specialDay p,#finalMsg p { font-size:1.5rem; color:#ff0044; line-height:1.5em; }
+</style>
+</head>
+
+<body>
+<!-- Page 1 -->
+<div class="page" id="page1">
+  <h1>Merry Christmas, <span id="name">Sawa Badmosh</span>! 🎄❤️</h1>
+  <p id="tapTarget">Tap anywhere to see your magical surprise! 💖✨</p>
+</div>
+
+<!-- Page 2 -->
+<div class="page hidden" id="page2">
+  <div id="extraMessage">
+    <p>My dearest <span id="nameMessage">Sawa</span>,</p>
+    <p>This Christmas, I wish for your heart to be filled with love, warmth, and endless happiness. Every snowflake that falls reminds me of the sparkle you bring into my life. ❄️💖</p>
+    <p>May our love glow brighter than the twinkling lights on the Christmas tree, and may every moment we share this season be wrapped in joy, laughter, and togetherness. ❤️✨</p>
+    <p>As you unwrap the gifts of this festive season, remember that the most precious gift I cherish is you. 💕</p>
+    <p>Thank you for being the most wonderful part of my life, Sawa. Merry Christmas and a magical New Year filled with our love! 🎄💖💫</p>
+    <p id="nextClickMsg">Tap again for something extra special… 💌</p>
+  </div>
+</div>
+
+<!-- Page 3 -->
+<div class="page hidden" id="page3">
+  <div id="specialDay">
+    <p>And here it is, my love…</p>
+    <p>An unforgettable and most special day in our life: <strong>28.08.2024 ❤️</strong></p>
+    <p><strong>I Love You So Much My Baby Girl ❤️</strong></p>
+  </div>
+</div>
+
+<audio id="bgm" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2021/12/25/audio_8cfe112f16.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const page1 = document.getElementById("page1");
+const page2 = document.getElementById("page2");
+const page3 = document.getElementById("page3");
+const tapTarget = document.getElementById("tapTarget");
+const nameElem = document.getElementById("name");
+const nameMessage = document.getElementById("nameMessage");
+const bgm = document.getElementById("bgm");
+
+let started = false;
+let specialClicked = false;
+
+// Icons and colors
+const icons = ["❤️","❄️","⭐","🎄","💚","💖","✨"];
+const iconColors = ["#ff0044","#ff66cc","#ff3399","#00cc66","#ffff00","#ff99cc","#ff3366"];
+
+// Twinkling stars
+function createStar() {
+  const star = document.createElement("div");
+  star.className = "star";
+  star.innerHTML = "⭐";
+  star.style.left = Math.random()*100+"vw";
+  star.style.top = Math.random()*100+"vh";
+  star.style.fontSize = 6+Math.random()*8+"px";
+  star.style.animationDuration = 1+Math.random()*3+"s";
+  document.body.appendChild(star);
+  setTimeout(()=>star.remove(),4000);
+}
+
+// Snowflakes
+function createSnowflake() {
+  const snow = document.createElement("div");
+  snow.className = "snowflake";
+  snow.innerHTML = "❄️";
+  snow.style.left = Math.random()*100+"vw";
+  snow.style.fontSize = 10+Math.random()*16+"px";
+  snow.style.animationDuration = 5+Math.random()*5+"s";
+  document.body.appendChild(snow);
+  setTimeout(()=>snow.remove(),10000);
+}
+
+// Floating hearts with swirling motion
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className="heart-floating";
+  heart.innerHTML="❤️";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=16+Math.random()*16+"px";
+  heart.style.color=iconColors[Math.floor(Math.random()*iconColors.length)];
+  document.body.appendChild(heart);
+
+  let t = 0;
+  const amplitude = 30 + Math.random()*20;
+  const speed = 0.02 + Math.random()*0.02;
+  const startX = parseFloat(heart.style.left);
+  const interval = setInterval(()=>{
+    t += speed;
+    heart.style.top = (window.innerHeight - t*window.innerHeight) + "px";
+    heart.style.left = startX + Math.sin(t*2*Math.PI)*amplitude + "px";
+    if(parseFloat(heart.style.top) < -20){
+      clearInterval(interval);
+      heart.remove();
+    }
+  },16);
+}
+
+// Burst icons
+function createBurstIcons(x,y){
+  for(let i=0;i<10;i++){
+    const icon = document.createElement("div");
+    icon.className="burst-icon";
+    icon.innerHTML = icons[Math.floor(Math.random()*icons.length)];
+    icon.style.left = x+"px";
+    icon.style.top = y+"px";
+    icon.style.color = iconColors[Math.floor(Math.random()*iconColors.length)];
+    const angle = Math.random()*Math.PI*2;
+    const distance = 50+Math.random()*40;
+    icon.style.setProperty("--x", Math.cos(angle)*distance+"px");
+    icon.style.setProperty("--y", Math.sin(angle)*distance+"px");
+    document.body.appendChild(icon);
+    setTimeout(()=>icon.remove(),1200);
+  }
+}
+
+// Start experience - Page 1 -> Page 2
+tapTarget.addEventListener("click", ()=>{
+  if(started) return;
+  started=true;
+  page1.classList.add("hidden");
+  page2.classList.remove("hidden");
+  nameElem.textContent="Sawa";
+  nameMessage.textContent="Sawa";
+  bgm.volume=0.4;
+  bgm.play();
+  setInterval(createStar,500);
+  setInterval(createSnowflake,200);
+  setInterval(createHeart,300);
+});
+
+// Page 2 -> Page 3 on tap
+page2.addEventListener("click", ()=>{
+  if(specialClicked) return;
+  specialClicked=true;
+  page2.classList.add("hidden");
+  page3.classList.remove("hidden");
+});
+
+// Anywhere tap for burst + vibration
+document.body.addEventListener("click",(e)=>{
+  if(!started) return;
+  if(navigator.vibrate) navigator.vibrate(30);
+  createBurstIcons(e.clientX,e.clientY);
+});
+</script>
+</body>
+</html>
